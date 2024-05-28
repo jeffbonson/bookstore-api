@@ -63,9 +63,23 @@ const deleteBook = async (req, res) => {
   }
 };
 
+const blockingPage = async (req, res) => {
+  try {
+    let counter = 0;
+    for(let i=0; i < 20000000000; i++) {
+      counter++;
+    }
+    res.status(200).send(`result is ${counter}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllBooks,
   createBook,
   updateBook,
   deleteBook,
+  blockingPage,
 };
