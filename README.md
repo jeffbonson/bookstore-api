@@ -44,3 +44,15 @@
 - Create a record using postman as mentioned below
 - This record will be stored in docker postgres database.
 
+# Push to docker hub
+- Tag using the command - docker tag bookstore-api-app jeffbonson85/bookstore-api-app:latest
+- Push to docker hub using the command - docker push jeffbonson85/bookstore-api-app:latest
+
+# To use in another system (Mac)
+- colima start
+- docker login
+- docker pull jeffbonson85/bookstore-api-app:latest
+- create a network - docker network create bookstore-api_bookstpre-api-network
+- docker start db
+- docker run -d -p 3000:3000 jeffbonson85/bookstore-api-app:latest
+
