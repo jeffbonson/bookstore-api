@@ -53,6 +53,15 @@
 - docker login
 - docker pull jeffbonson85/bookstore-api-app:latest
 - create a network - docker network create bookstore-api_bookstpre-api-network
-- docker start db
-- docker run -d -p 3000:3000 jeffbonson85/bookstore-api-app:latest
+- to login to database 
+  - docker exec -it bookstore-api-db psql -u postgres
+  - /c bookstore
+- docker run -d --name bookstore-api-app --network bookstore-api-network \
+  -e PGUSER=postgres \
+  -e PGHOST=bookstore-api-db \
+  -e PGDATABASE=bookstore \
+  -e PGPASSWORD=123456 \
+  -e PGPORT=5432 \
+  -p 3000:3000 \
+
 
