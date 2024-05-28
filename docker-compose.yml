@@ -27,7 +27,7 @@ services:
       - "3000:3000"
     environment:
       - PGUSER=postgres
-      - PGHOST=db
+      - PGHOST=bookstore-api-db
       - PGDATABASE=bookstore
       - PGPASSWORD=123456
       - PGPORT=5432

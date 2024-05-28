@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Copy the rest of the application code to the container
 COPY . .
 
