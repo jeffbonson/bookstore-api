@@ -1,4 +1,6 @@
 const bookModel = require('../models/bookModel');
+const { Worker } = require('worker_threads');
+const path = require('path');
 
 const getAllBooks = async (req, res) => {
   try {
@@ -63,16 +65,27 @@ const deleteBook = async (req, res) => {
   }
 };
 
-const blockingPage = async (req, res) => {
+const blockingPage = (req, res) => {
   try {
-    let counter = 0;
-    for(let i=0; i < 20000000000; i++) {
-      counter++;
-    }
-    res.status(200).send(`result is ${counter}`);
+      // Get the absolute path to the worker file
+      const workerFilePath = path.resolve(__dirname, 'worker.js');
+
+      // Create a new worker thread
+      const worker = new Worker(workerFilePath);
+
+      // Listen for messages from the worker thread
+      worker.on('message', (result) => {
+          res.status(200).send(`result is ${result}`);
+      });
+
+      // Listen for errors from the worker thread
+      worker.on('error', (error) => {
+          console.error('Worker thread error:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+      });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error creating worker thread:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
